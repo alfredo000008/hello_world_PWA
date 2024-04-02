@@ -1,30 +1,39 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi primera PWA</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="manifest" href="manifest.json">
+  <title>Inline Service Worker Example</title>
 </head>
 <body>
-  <div id="app">
-    <h1>Hola Mundo!</h1>
-  </div>
+  <h1>Hello World!</h1>
+
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(registration => {
-            console.log('Service Worker registrado con éxito:', registration);
-          })
-          .catch(error => {
-            console.error('Error al registrar el Service Worker:', error);
+        navigator.serviceWorker.register('data:text/javascript,' + encodeURIComponent(`
+          // Inline Service Worker code here
+          self.addEventListener('install', event => {
+            console.log('Inline Service Worker installed');
           });
+
+          self.addEventListener('activate', event => {
+            console.log('Inline Service Worker activated');
+          });
+
+          self.addEventListener('fetch', event => {
+            console.log('Intercepting request:', event.request.url);
+            // Additional fetch handling logic here
+          });
+        `))
+        .then(registration => {
+          console.log('Inline Service Worker registered successfully:', registration);
+        })
+        .catch(error => {
+          console.error('Failed to register Inline Service Worker:', error);
+        });
       });
     }
   </script>
-  
-  <script src="script.js"></script>
 </body>
 </html>
