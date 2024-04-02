@@ -11,27 +11,13 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('data:text/javascript,' + encodeURIComponent(`
-          // Inline Service Worker code here
-          self.addEventListener('install', event => {
-            console.log('Inline Service Worker installed');
+        navigator.serviceWorker.register('service-worker.js')
+          .then(registration => {
+            console.log('Service Worker registered successfully:', registration);
+          })
+          .catch(error => {
+            console.error('Failed to register Service Worker:', error);
           });
-
-          self.addEventListener('activate', event => {
-            console.log('Inline Service Worker activated');
-          });
-
-          self.addEventListener('fetch', event => {
-            console.log('Intercepting request:', event.request.url);
-            // Additional fetch handling logic here
-          });
-        `))
-        .then(registration => {
-          console.log('Inline Service Worker registered successfully:', registration);
-        })
-        .catch(error => {
-          console.error('Failed to register Inline Service Worker:', error);
-        });
       });
     }
   </script>
